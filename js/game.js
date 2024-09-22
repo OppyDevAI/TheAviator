@@ -142,30 +142,19 @@ function handleKeyDown(event) {
     switch(event.key) {
         case "w":
         case "W":
-            game.planeCollisionDisplacementY = 1;
+            mousePos.y = Math.min(1, mousePos.y + 0.1);
             break;
         case "s":
         case "S":
-            game.planeCollisionDisplacementY = -1;
+            mousePos.y = Math.max(-1, mousePos.y - 0.1);
             break;
         case "a":
         case "A":
-            game.planeSpeed = Math.max(game.planeMinSpeed, game.planeSpeed - 0.1);
+            mousePos.x = Math.max(-1, mousePos.x - 0.1);
             break;
         case "d":
         case "D":
-            game.planeSpeed = Math.min(game.planeMaxSpeed, game.planeSpeed + 0.1);
-            break;
-    }
-}
-
-function handleKeyUp(event) {
-    switch(event.key) {
-        case "w":
-        case "W":
-        case "s":
-        case "S":
-            game.planeCollisionDisplacementY = 0;
+            mousePos.x = Math.min(1, mousePos.x + 0.1);
             break;
     }
 }
@@ -173,9 +162,8 @@ function handleKeyUp(event) {
 // ADD EVENT LISTENERS
 
 window.addEventListener('resize', handleWindowResize, false);
-document.addEventListener('mousemove', handleMouseMove, false);
+document.removeEventListener('mousemove', handleMouseMove, false);
+document.removeEventListener('mouseup', handleMouseUp, false);
 document.addEventListener('touchmove', handleTouchMove, false);
-document.addEventListener('mouseup', handleMouseUp, false);
 document.addEventListener('touchend', handleTouchEnd, false);
 document.addEventListener('keydown', handleKeyDown, false);
-document.addEventListener('keyup', handleKeyUp, false);

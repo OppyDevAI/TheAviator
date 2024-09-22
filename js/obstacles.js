@@ -1,13 +1,42 @@
 Ennemy = function(){
-  var geom = new THREE.TetrahedronGeometry(8,2);
+  var geom = new THREE.SphereGeometry(8, 32, 32);
   var mat = new THREE.MeshPhongMaterial({
-    color:Colors.red,
-    shininess:0,
-    specular:0xffffff,
-    shading:THREE.FlatShading
+    color: 0xff8c00, // Pumpkin orange color
+    shininess: 10,
+    specular: 0x333333,
+    shading: THREE.FlatShading
   });
-  this.mesh = new THREE.Mesh(geom,mat);
+  this.mesh = new THREE.Mesh(geom, mat);
   this.mesh.castShadow = true;
+
+  // Add ridges to the pumpkin
+  var ridges = 8;
+  for (var i = 0; i < ridges; i++) {
+    var ridgeGeom = new THREE.CylinderGeometry(0.5, 0.5, 16, 32);
+    var ridgeMat = new THREE.MeshPhongMaterial({
+      color: 0xff8c00,
+      shininess: 10,
+      specular: 0x333333,
+      shading: THREE.FlatShading
+    });
+    var ridge = new THREE.Mesh(ridgeGeom, ridgeMat);
+    ridge.position.set(0, 0, 0);
+    ridge.rotation.z = (i * Math.PI) / (ridges / 2);
+    this.mesh.add(ridge);
+  }
+
+  // Add a stem to the pumpkin
+  var stemGeom = new THREE.CylinderGeometry(1, 1, 5, 32);
+  var stemMat = new THREE.MeshPhongMaterial({
+    color: 0x8b4513, // Brown color for the stem
+    shininess: 10,
+    specular: 0x333333,
+    shading: THREE.FlatShading
+  });
+  var stem = new THREE.Mesh(stemGeom, stemMat);
+  stem.position.set(0, 8, 0);
+  this.mesh.add(stem);
+
   this.angle = 0;
   this.dist = 0;
 }
@@ -126,16 +155,40 @@ ParticlesHolder.prototype.spawnParticles = function(pos, density, color, scale){
 }
 
 Coin = function(){
-  var geom = new THREE.TetrahedronGeometry(5,0);
+  var geom = new THREE.ConeGeometry(5, 10, 32);
   var mat = new THREE.MeshPhongMaterial({
-    color:0x009999,
-    shininess:0,
-    specular:0xffffff,
-
-    shading:THREE.FlatShading
+    color: 0xFFFF00, // Yellow color for the base
+    shininess: 10,
+    specular: 0x333333,
+    shading: THREE.FlatShading
   });
-  this.mesh = new THREE.Mesh(geom,mat);
+  this.mesh = new THREE.Mesh(geom, mat);
   this.mesh.castShadow = true;
+
+  // Add white tip
+  var tipGeom = new THREE.ConeGeometry(3, 3, 32);
+  var tipMat = new THREE.MeshPhongMaterial({
+    color: 0xFFFFFF, // White color for the tip
+    shininess: 10,
+    specular: 0x333333,
+    shading: THREE.FlatShading
+  });
+  var tip = new THREE.Mesh(tipGeom, tipMat);
+  tip.position.set(0, 5.5, 0);
+  this.mesh.add(tip);
+
+  // Add orange middle
+  var middleGeom = new THREE.CylinderGeometry(3.5, 3.5, 4, 32);
+  var middleMat = new THREE.MeshPhongMaterial({
+    color: 0xFFA500, // Orange color for the middle
+    shininess: 10,
+    specular: 0x333333,
+    shading: THREE.FlatShading
+  });
+  var middle = new THREE.Mesh(middleGeom, middleMat);
+  middle.position.set(0, 1.5, 0);
+  this.mesh.add(middle);
+
   this.angle = 0;
   this.dist = 0;
 }
